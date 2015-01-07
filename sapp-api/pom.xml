@@ -9,8 +9,39 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>sapp-api</artifactId>
-
+    <description>This provides custom APIs on top of what is provided by spring data</description>
+    <dependencies>
+        <dependency>
+            <groupId>com.mmrath.sapp</groupId>
+            <artifactId>sapp-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.mmrath.sapp</groupId>
+            <artifactId>sapp-domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
