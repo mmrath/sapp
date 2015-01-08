@@ -2,7 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<groupId>com.mmrath.sapp</groupId>
 	<artifactId>sapp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -13,9 +12,7 @@
 		<module>sapp-domain</module>
 		<module>sapp-api</module>
 	</modules>
-
 	<packaging>pom</packaging>
-
 	<name>sapp</name>
 	<description>Spring Application using Spring Boot</description>
 
@@ -30,6 +27,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<start-class>com.mmrath.sapp.ApplicationMain</start-class>
 		<java.version>1.8</java.version>
+		<flyway.version>3.1</flyway.version>
 	</properties>
 
 	<dependencyManagement>
@@ -49,7 +47,6 @@
 				<artifactId>sapp-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>javax.validation</groupId>
 				<artifactId>validation-api</artifactId>
@@ -60,7 +57,11 @@
 				<artifactId>hibernate-jpa-2.1-api</artifactId>
 				<version>1.0.0.Final</version>
 			</dependency>
-
+			<dependency>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-core</artifactId>
+				<version>${flyway.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 </project>

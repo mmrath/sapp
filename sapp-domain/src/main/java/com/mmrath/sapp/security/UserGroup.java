@@ -17,11 +17,9 @@ import java.util.List;
  *
  * @author Murali
  */
-/*
 @Entity
 @Cacheable
 @Table(name = "t_user_group")
-*/
 public class UserGroup extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -39,19 +37,13 @@ public class UserGroup extends BaseEntity {
     @Size(min = 4, max = 64)
     private String description;
 
-    @OneToMany
-    @JoinTable(name = "t_user_group_permission", joinColumns =
-            @JoinColumn(name = "group_id"), inverseJoinColumns =
-            @JoinColumn(name = "permission_id"))
-    private List<Permission> permissions = new ArrayList<>();
-
-    @OneToMany
+    @ManyToMany
     @JoinTable(name = "t_user_group_role", joinColumns =
             @JoinColumn(name = "group_id"), inverseJoinColumns =
             @JoinColumn(name = "role_id"))
     private List<Role> roles = new ArrayList<>();
 
-    @OneToMany
+    @ManyToMany
     @JoinTable(name = "t_user_group_user", joinColumns =
     @JoinColumn(name = "group_id"), inverseJoinColumns =
     @JoinColumn(name = "user_id"))
@@ -79,14 +71,6 @@ public class UserGroup extends BaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public List<Permission> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(List<Permission> permissions) {
-        this.permissions = permissions;
     }
 
     public List<Role> getRoles() {

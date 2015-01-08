@@ -79,7 +79,6 @@ public class UserService {
         if (user == null) {
             return userPermissions;
         }
-        userPermissions.addAll(user.getPermissions());
         for (Role role : user.getRoles()) {
             userPermissions.addAll(role.getPermissions());
         }

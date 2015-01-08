@@ -14,14 +14,12 @@ import java.util.List;
 @NamedQueries({
         @NamedQuery(name = User.QUERY_FIND_BY_USER_NAME, query = "select t from User t where lower(t.username) = lower(:username)"),
         @NamedQuery(name = User.QUERY_FIND_ROLES, query = "select t.roles from User t where t.id = :id"),
-        @NamedQuery(name = User.QUERY_FIND_PERMISSIONS, query = "select t.permissions from User t where t.id = :id"),
         @NamedQuery(name = User.QUERY_FIND_ALL_PERMISSIONS, query = "select distinct(p) from User u, Permission p, Role r " +
-                "where u.id = :id and ( p member of u.permissions or ( r member of u.roles and p member of r.permissions))")
+                "where u.id = :id and ( r member of u.roles and p member of r.permissions)")
 })
 public class User extends BaseEntity {
     public static final String QUERY_FIND_BY_USER_NAME = "User.findByUsernameQ";
     public static final String QUERY_FIND_ROLES = "User.findRoles";
-    public static final String QUERY_FIND_PERMISSIONS = "User.findPermissions";
     public static final String QUERY_FIND_ALL_PERMISSIONS = "User.findAllPermissions";
 
 
@@ -51,16 +49,11 @@ public class User extends BaseEntity {
     private String email;
     @Column(nullable = false)
     private Boolean enabled;
-    @OneToMany()
+    @ManyToMany()
     @JoinTable(name = "t_user_role", joinColumns =
     @JoinColumn(name = "user_id"), inverseJoinColumns =
     @JoinColumn(name = "role_id"))
     private List<Role> roles = new ArrayList<>();
-    @OneToMany
-    @JoinTable(name = "t_user_permission", joinColumns =
-    @JoinColumn(name = "user_id"), inverseJoinColumns =
-    @JoinColumn(name = "permission_id"))
-    private List<Permission> permissions = new ArrayList<>();
 
     @Override
     public String toString() {
@@ -72,7 +65,6 @@ public class User extends BaseEntity {
                 ", email='" + email + '\'' +
                 ", enabled=" + enabled +
                 ", roles=" + roles +
-                ", permissions=" + permissions +
                 "} " + super.toString();
     }
 
@@ -131,15 +123,6 @@ public class User extends BaseEntity {
     public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
-
-    public List<Permission> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(List<Permission> permissions) {
-        this.permissions = permissions;
-    }
-
 
     public UserCredential getCredential() {
         return credential;

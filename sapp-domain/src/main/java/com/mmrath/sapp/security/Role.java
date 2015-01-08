@@ -38,7 +38,7 @@ public class Role extends BaseEntity {
     @Size(min = 4, max = 64)
     private String description;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "t_role_permission", joinColumns =
             @JoinColumn(name = "role_id"), inverseJoinColumns =
             @JoinColumn(name = "permission_id"))
