@@ -2,7 +2,7 @@ CREATE TABLE t_user
   (
      id          BIGINT NOT NULL,
      email       VARCHAR(64) NOT NULL,
-     enabled     BOOLEAN NOT NULL,
+     enabled     SMALLINT NOT NULL,
      first_name  VARCHAR(255),
      last_name   VARCHAR(255),
      username    VARCHAR(30) NOT NULL,

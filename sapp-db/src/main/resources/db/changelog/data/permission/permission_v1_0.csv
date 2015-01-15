@@ -1,0 +1,13 @@
+id,name,description
+1,USER_VIEW,View User
+2,USER_CREATE,Create User
+3,USER_UPDATE,Update User
+4,USER_DELETE,Delete User
+5,ROLE_VIEW,View Role
+6,ROLE_CREATE,Create Role
+7,ROLE_UPDATE, Update Role
+8,ROLE_DELETE,Delete Role
+9,USER_GROUP_VIEW,View User Groups
+10,USER_GROUP_CREATE, Create User Groups
+11,USER_GROUP_UPDATE, Update User Groups
+12,USER_GROUP_DELETE, Delete User Groups

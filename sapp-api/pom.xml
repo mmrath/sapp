@@ -18,6 +18,11 @@
         </dependency>
         <dependency>
             <groupId>com.mmrath.sapp</groupId>
+            <artifactId>sapp-db</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.mmrath.sapp</groupId>
             <artifactId>sapp-domain</artifactId>
         </dependency>
         <dependency>

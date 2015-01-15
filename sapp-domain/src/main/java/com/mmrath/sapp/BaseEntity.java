@@ -1,103 +1,93 @@
 package com.mmrath.sapp;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mmrath.sapp.security.User;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
 @MappedSuperclass
-public abstract class BaseEntity implements Serializable {
+public abstract class BaseEntity<T extends Serializable> implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @JsonIgnore
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "create_time", nullable = false, updatable = false)
-    private Date createTime;
-    @JsonIgnore
-    @Column(name = "created_by", nullable = false, updatable = false)
-    private String createdBy;
-    @JsonIgnore
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "update_time", nullable = false)
-    private Date updateTime;
-    @JsonIgnore
-    @Column(name = "updated_by", nullable = false)
-    private String updatedBy;
-    @Version
-    private Integer version;
+  private static final long serialVersionUID = 1L;
 
-    @PrePersist
-    protected void onCreate() {
-        updateTime = createTime = new Date();
-        createdBy = updatedBy = getCurrentUser();
-    }
+  @JsonIgnore
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "created_date", nullable = false, updatable = false)
+  private Date createdDate;
 
-    @PreUpdate
-    protected void onUpdate() {
-        updateTime = new Date();
-        updatedBy = getCurrentUser();
-    }
+  @JsonIgnore
+  @ManyToOne
+  @JoinColumn(name = "created_by", nullable = false, updatable = false)
+  private User createdBy;
 
-    private String getCurrentUser() {
-        Object principal = "ReplaceMe";//SecurityUtils.getSubject().getPrincipal();
-        if (principal != null) {
-            return principal.toString();
-        } else {
-            return "unknown";
-        }
-    }
+  @JsonIgnore
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "last_modified_date", nullable = false)
+  private Date lastModifiedDate;
 
-    @Override
-    public String toString() {
-        return "BaseEntity{" +
-                "createTime=" + createTime +
-                ", createdBy='" + createdBy + '\'' +
-                ", updateTime=" + updateTime +
-                ", updatedBy='" + updatedBy + '\'' +
-                ", version=" + version +
-                '}';
-    }
+  @JsonIgnore
+  @ManyToOne
+  @JoinColumn(name = "last_modified_by", nullable = false)
+  private User lastModifiedBy;
 
-    public abstract Serializable getId();
+  @Version
+  private Integer version;
 
-    public final Date getCreateTime() {
-        return createTime;
-    }
+  @PrePersist
+  protected void onCreate() {
+    lastModifiedDate = createdDate = new Date();
+  }
 
-    public final void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+  @PreUpdate
+  protected void onUpdate() {
+    lastModifiedDate = new Date();
+  }
 
-    public final String getCreatedBy() {
-        return createdBy;
-    }
+  public abstract T getId();
 
-    public final void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
+  public boolean isNew() {
+    return null == this.getId();
+  }
 
-    public final Date getUpdateTime() {
-        return updateTime;
-    }
+  public Date getCreatedDate() {
+    return createdDate;
+  }
 
-    public final void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
+  public void setCreatedDate(Date createdDate) {
+    this.createdDate = createdDate;
+  }
 
-    public final String getUpdatedBy() {
-        return updatedBy;
-    }
+  public User getCreatedBy() {
+    return createdBy;
+  }
 
-    public final void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
+  public void setCreatedBy(User createdBy) {
+    this.createdBy = createdBy;
+  }
 
-    public final Integer getVersion() {
-        return version;
-    }
+  public Date getLastModifiedDate() {
+    return lastModifiedDate;
+  }
 
-    public final void setVersion(Integer version) {
-        this.version = version;
-    }
+  public void setLastModifiedDate(Date lastModifiedDate) {
+    this.lastModifiedDate = lastModifiedDate;
+  }
+
+  public User getLastModifiedBy() {
+    return lastModifiedBy;
+  }
+
+  public void setLastModifiedBy(User lastModifiedBy) {
+    this.lastModifiedBy = lastModifiedBy;
+  }
+
+  public Integer getVersion() {
+    return version;
+  }
+
+  public void setVersion(Integer version) {
+    this.version = version;
+  }
 }

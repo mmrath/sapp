@@ -7,77 +7,79 @@ package com.mmrath.sapp.security;
 import com.mmrath.sapp.utils.PersistentUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.List;
 import java.util.Locale;
 
-@Named
+@Component
 public class RoleService {
 
-    private static final Logger logger = LoggerFactory.getLogger(RoleService.class);
+  private static final Logger logger = LoggerFactory.getLogger(RoleService.class);
 
-    @Inject
-    private RoleRepository roleRepository;
+  private final RoleRepository roleRepository;
 
-    @Transactional(readOnly = true)
-    public List<Permission> findRolePermissions(Long roleId) {
-        List<Permission> permissions = roleRepository.findOne(roleId).getPermissions();
-        return permissions;
+  @Autowired
+  public RoleService(RoleRepository roleRepository) {
+    this.roleRepository = roleRepository;
+  }
+
+  @Transactional(readOnly = true)
+  public List<Permission> findRolePermissions(Long roleId) {
+    List<Permission> permissions = roleRepository.findOne(roleId).getPermissions();
+    return permissions;
+  }
+
+  @Transactional(readOnly = true)
+  public List<Permission> findPermissionsUnassignedToRole(Long roleId) {
+    return roleRepository.findAllUnassignedPermissions(roleId);
+  }
+
+  @Transactional
+  public Role createRole(Role role) {
+    role.setName(role.getName().toUpperCase(Locale.getDefault()).trim());
+    role = roleRepository.save(role);
+    PersistentUtils.initialize(role);
+    return role;
+  }
+
+  @Transactional
+  public void deleteRole(Role role) {
+    roleRepository.delete(role);
+  }
+
+  @Transactional
+  public List<Role> findAllRoles() {
+    List<Role> roles = roleRepository.findAll();
+    PersistentUtils.initialize(roles);
+    return roles;
+  }
+
+  @Transactional(readOnly = true)
+  public Role findRoleById(Long id) {
+    Role role = roleRepository.findOne(id);
+    if (role != null) {
+      logger.debug("Found role {} with {} permissions", role.getId(),
+          role.getPermissions().size());//load all permissions
+      logger.trace("Permissions for role {} are {}", role.getId(), role.getPermissions());
     }
+    PersistentUtils.initialize(role);
+    return role;
+  }
 
-    @Transactional(readOnly = true)
-    public List<Permission> findPermissionsUnassignedToRole(Long roleId) {
-        return roleRepository.findAllUnassignedPermissions(roleId);
-    }
+  @Transactional
+  public Role updateRole(Role role) {
+    return roleRepository.save(role);
+  }
 
-    @Transactional
-    public Role createRole(Role role) {
-        role.setName(role.getName().toUpperCase(Locale.getDefault()).trim());
-        role = roleRepository.save(role);
-        PersistentUtils.initialize(role);
-        return role;
-    }
-
-    @Transactional
-    public void deleteRole(Role role) {
-        roleRepository.delete(role);
-    }
-
-    @Transactional
-    public List<Role> findAllRoles() {
-        List<Role> roles = roleRepository.findAll();
-        PersistentUtils.initialize(roles);
-        return roles;
-    }
-
-    @Transactional(readOnly = true)
-
-    public Role findRoleById(Long id) {
-        Role role = roleRepository.findOne(id);
-        if (role != null) {
-            logger.debug("Found role {} with {} permissions", role.getId(), role.getPermissions().size());//load all permissions
-            logger.trace("Permissions for role {} are {}", role.getId(), role.getPermissions());
-        }
-        PersistentUtils.initialize(role);
-        return role;
-    }
-
-    @Transactional
-
-    public Role updateRole(Role role) {
-        return roleRepository.save(role);
-    }
-
-    @Transactional
-
-    public Page<Role> findAllRoles(Pageable pageRequest) {
-        Page<Role> rolesPage = roleRepository.findAll(pageRequest);
-        PersistentUtils.initialize(rolesPage.getContent());
-        return rolesPage;
-    }
+  @Transactional
+  public Page<Role> findAllRoles(Pageable pageRequest) {
+    Page<Role> rolesPage = roleRepository.findAll(pageRequest);
+    PersistentUtils.initialize(rolesPage.getContent());
+    return rolesPage;
+  }
 }

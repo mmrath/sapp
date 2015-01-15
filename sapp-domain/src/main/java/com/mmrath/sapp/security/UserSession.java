@@ -11,21 +11,21 @@ import java.util.Date;
 @Table(name = "t_user_session")
 public class UserSession {
 
-    @Id
-    @Column(name="session_id")
-    private String sessionId;
+  @Id
+  @Column(name = "session_id")
+  private String sessionId;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name="user_id", nullable=false, updatable=false)
-    private User user;
+  @ManyToOne(optional = false)
+  @JoinColumn(name = "user_id", nullable = false, updatable = false)
+  private User user;
 
-    @Column(name="start_time", nullable = false, updatable = false)
-    private Date startTime;
+  @Column(name = "start_time", nullable = false, updatable = false)
+  private Date startTime;
 
-    @Column(name="end_time", insertable = false)
-    private Date endTime;
+  @Column(name = "end_time", insertable = false)
+  private Date endTime;
 
-    @Column(name="auto_signed_off")
-    private Boolean autoSignedOff;
+  @Column(name = "auto_signed_off")
+  private Boolean autoSignedOff;
 
 }

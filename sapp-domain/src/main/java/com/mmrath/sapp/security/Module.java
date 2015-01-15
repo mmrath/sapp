@@ -5,32 +5,33 @@ import java.util.Map;
 
 public enum Module {
 
-    USER(1, "User"),
-    ROLE(2, "Role"),
-    USER_GROUP(3, "User Group");
+  USER(1, "User"),
+  ROLE(2, "Role"),
+  USER_GROUP(3, "User Group");
 
-    private Module(int val, String display){
-        this.value = val;
-        this.display = display;
-    }
+  private static final Map<Integer, Module> lookup = new HashMap<>();
 
-    private int value;
-    private String display;
+  static {
+    for (Module item : Module.values())
+      lookup.put(item.getValue(), item);
+  }
 
+  private int value;
 
-    private static final Map<Integer, Module> lookup = new HashMap<>();
-    static {
-        for (Module item : Module.values())
-            lookup.put(item.getValue(), item);
-    }
+  private String display;
 
-    public Integer getValue() {
-        return value;
-    }
+  private Module(int val, String display) {
+    this.value = val;
+    this.display = display;
+  }
 
-    public static Module getKey(Integer value) {
-        return lookup.get(value);
-    }
+  public static Module getKey(Integer value) {
+    return lookup.get(value);
+  }
+
+  public Integer getValue() {
+    return value;
+  }
 
 
 }

@@ -1,26 +1,32 @@
 package com.mmrath.sapp.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.List;
 
-@Named
+@Component
 public class PermissionService {
 
-    @Inject
-    private PermissionRepository permissionRepository;
+  private final PermissionRepository permissionRepository;
 
-    public List<Permission> findAllPermissions() {
-        return permissionRepository.findAll(new Sort(Sort.Direction.ASC, "id"));
-    }
+  @Autowired
+  public PermissionService(PermissionRepository permissionRepository) {
+    this.permissionRepository  = permissionRepository;
+  }
 
-    public Permission findPermissionById(Long id) {
-        return permissionRepository.findOne(id);
-    }
+  @Secured("USER_VIEW")
+  public List<Permission> findAllPermissions() {
+    return permissionRepository.findAll(new Sort(Sort.Direction.ASC, "id"));
+  }
 
-    public Permission findPermissionByName(String permissionName) {
-        return permissionRepository.findByName(permissionName);
-    }
+  public Permission findPermissionById(Long id) {
+    return permissionRepository.findOne(id);
+  }
+
+  public Permission findPermissionByName(String permissionName) {
+    return permissionRepository.findByName(permissionName);
+  }
 }

@@ -5,55 +5,73 @@ import java.io.Serializable;
 
 @Entity
 @Cacheable
-@Table(name = "t_permission",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"module_id", "access_level_id"}))
+@Table(name = "t_permission")
 public class Permission implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    @Id
-    private Long id;
+  @Id
+  private Long id;
 
-    @Column(name = "module_id", unique = false, nullable = false, updatable = false, insertable = false)
-    private int moduleId;
+  @Column(name = "name", unique = true, nullable = false,
+      updatable = false, insertable = false)
+  private String name;
 
-    @Column(name = "access_level_id", unique = false, nullable = false, updatable = false, insertable = false)
-    private int accessLevelId;
+  @Column(name = "description", nullable = false)
+  private String description;
 
-    @Column(name = "name", unique = true, nullable = false, updatable = false, insertable = false)
-    private String name;
+  @Override
+  public String toString() {
+    return "Permission{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", description='" + description + '\'' +
+        '}';
+  }
 
-    @Override
-    public String toString() {
-        return "Permission{" +
-                "id=" + id +
-                ", moduleId=" + moduleId +
-                ", accessLevelId=" + accessLevelId +
-                ", name='" + name + '\'' +
-                "} " + super.toString();
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
 
-    public Long getId() {
-        return id;
-    }
+    Permission that = (Permission) o;
 
-    public AccessLevel getAccessLevel() {
-        return AccessLevel.getKey(this.accessLevelId);
-    }
+    if (id != null ? !id.equals(that.id) : that.id != null)
+      return false;
 
-    public Module getModule() {
-        return Module.getKey(this.moduleId);
-    }
+    return true;
+  }
 
-    public void setAccessLevel(AccessLevel accessLevel) {
-        this.accessLevelId = accessLevel.getValue();
-    }
+  @Override
+  public int hashCode() {
+    return id != null ? id.hashCode() : 0;
+  }
 
-    public void setModule(Module module) {
-        this.moduleId = module.getValue();
-    }
+  public String getDescription() {
+    return description;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+
 }
