@@ -6,7 +6,7 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
 
     <changeSet author="murali" id="1.0.0">
         <createTable tableName="sequence_table">
@@ -285,10 +285,10 @@
             <column name="last_name" type="STRING"/>
             <column name="email" type="STRING"/>
             <column name="enabled" type="NUMERIC"/>
-            <column name="created_date" type="TIMESTAMP" defaultValueDate="19-MAY-2013"/>
-            <column name="created_by" type="NUMERIC" defaultValue="1"/>
-            <column name="last_modified_date" type="TIMESTAMP" defaultValueDate="19-MAY-2013"/>
-            <column name="last_modified_by" type="NUMERIC" defaultValue="1"/>
+            <column name="created_date" type="COMPUTED" defaultValueComputed="${now}" />
+            <column name="created_by" type="STRING" defaultValue="system"/>
+            <column name="last_modified_date" type="COMPUTED" defaultValueComputed="${now}"/>
+            <column name="last_modified_by" type="STRING" defaultValue="system"/>
             <column name="version" type="NUMERIC" defaultValueNumeric="1"/>
         </loadData>
     </changeSet>
@@ -314,6 +314,49 @@
             <column name="seq_name" type="STRING"/>
             <column name="seq_value" type="NUMERIC"/>
         </loadData>
+    </changeSet>
+
+    <changeSet id="1.0.17" author="murali">
+        <createTable tableName="T_AUDIT_EVENT">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="principal" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="event_date" type="timestamp"/>
+            <column name="event_type" type="varchar(255)"/>
+        </createTable>
+
+        <createTable tableName="T_AUDIT_EVENT_DATA">
+            <column name="event_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="varchar(255)"/>
+        </createTable>
+        <addPrimaryKey columnNames="event_id, name" tableName="T_AUDIT_EVENT_DATA"/>
+
+        <createIndex indexName="idx_audit_event_01"
+                     tableName="T_AUDIT_EVENT"
+                     unique="false">
+            <column name="principal" type="varchar(255)"/>
+            <column name="event_date" type="timestamp"/>
+        </createIndex>
+
+        <createIndex indexName="idx_audit_event_data_01"
+                     tableName="T_AUDIT_EVENT_DATA"
+                     unique="false">
+            <column name="event_id" type="bigint"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="event_id"
+                                 baseTableName="T_AUDIT_EVENT_DATA"
+                                 constraintName="FK_audit_event_data_01"
+                                 referencedColumnNames="id"
+                                 referencedTableName="T_AUDIT_EVENT"/>
     </changeSet>
 
 </databaseChangeLog>

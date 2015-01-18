@@ -1,12 +1,15 @@
 package com.mmrath.sapp.security;
 
+import com.mmrath.sapp.ResourceNotFoundException;
+import com.mmrath.sapp.domain.security.User;
+import com.mmrath.sapp.domain.security.UserSearchFilter;
+import com.mmrath.sapp.service.security.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,12 +31,15 @@ public class UserController {
   @ResponseBody
   public User getUser(@PathVariable("id") Long id) {
     User user = userService.findUser(id);
+    if(user==null){
+      throw new ResourceNotFoundException("User not found");
+    }
     return user;
   }
 
   @RequestMapping(method = RequestMethod.GET)
   @ResponseBody
-  public Page<User> getUsers(UserSearchCriteria userSearchCriteria, Pageable pageRequest) {
+  public Page<User> getUsers(UserSearchFilter userSearchCriteria, Pageable pageRequest) {
     logger.debug("Page request:{}", pageRequest);
     logger.debug("User search criteria:{}", userSearchCriteria);
     return null;
@@ -41,18 +47,18 @@ public class UserController {
 
   @RequestMapping(method = RequestMethod.POST)
   @ResponseBody
-  public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+  public User createUser(@Valid @RequestBody User user) {
     logger.debug("User to create:{}", user);
     userService.createUser(user);
-    return new ResponseEntity<>(user, HttpStatus.OK);
+    return user;
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
   @ResponseBody
-  public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody User user) {
+  public User updateUser(@PathVariable("id") Long id, @RequestBody User user) {
     logger.debug("User to update:{}", user);
     user = userService.updateUser(user);
-    return new ResponseEntity<>(user, HttpStatus.OK);
+    return user;
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -61,6 +67,4 @@ public class UserController {
     logger.debug("User to delete:{}", id);
     return userService.deleteUser(id);
   }
-
-
 }

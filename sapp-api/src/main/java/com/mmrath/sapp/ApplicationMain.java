@@ -2,14 +2,12 @@ package com.mmrath.sapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
-@Configuration
-@ComponentScan
-@EnableAutoConfiguration
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@SpringBootApplication
 public class ApplicationMain {
 
     public static void main(String[] args) {

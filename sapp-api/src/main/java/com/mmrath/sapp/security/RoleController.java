@@ -1,10 +1,12 @@
 package com.mmrath.sapp.security;
 
+import com.mmrath.sapp.ResourceNotFoundException;
+import com.mmrath.sapp.domain.security.Permission;
+import com.mmrath.sapp.domain.security.Role;
+import com.mmrath.sapp.service.security.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,40 +32,38 @@ public class RoleController {
 
   @RequestMapping(method = RequestMethod.POST)
   @ResponseBody
-  public ResponseEntity<Role> createRole(@Valid @RequestBody Role role) {
+  public Role createRole(@Valid @RequestBody Role role) {
     role = roleService.createRole(role);
-    return new ResponseEntity<>(role, HttpStatus.OK);
+    return role;
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
   @ResponseBody
-  public ResponseEntity<Role> updateRole(@PathVariable("id") Long id,
+  public Role updateRole(@PathVariable("id") Long id,
       @Valid @RequestBody Role role) {
     role = roleService.updateRole(role);
-    return new ResponseEntity<>(role, HttpStatus.OK);
+    return role;
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
   @ResponseBody
-  public ResponseEntity<Role> findRole(@PathVariable("id") Long id) {
+  public Role findRole(@PathVariable("id") Long id) {
     Role role = roleService.findRoleById(id);
     if (role == null) {
-      return new ResponseEntity<>(role, HttpStatus.NOT_FOUND);
+      throw new ResourceNotFoundException("Role not found");
     }
-    return new ResponseEntity<>(role, HttpStatus.OK);
+    return role;
   }
 
   @RequestMapping(value = "/{id}/permissions", method = RequestMethod.GET)
   @ResponseBody
-  public ResponseEntity<List<Permission>> findAssignedPermissions(@PathVariable("id") Long id) {
-    List<Permission> permissions = roleService.findRolePermissions(id);
-    return new ResponseEntity<>(permissions, HttpStatus.OK);
+  public List<Permission> findAssignedPermissions(@PathVariable("id") final Long id,
+      @RequestParam(defaultValue = "false") final boolean unassigned) {
+    if(!unassigned) {
+      return roleService.findRolePermissions(id);
+    }else{
+      return roleService.findPermissionsUnassignedToRole(id);
+    }
   }
 
-  @RequestMapping(value = "/{id}/permissions/unassigned", method = RequestMethod.GET)
-  @ResponseBody
-  public ResponseEntity<List<Permission>> findUnassignedPermissions(@PathVariable("id") Long id) {
-    List<Permission> permissions = roleService.findPermissionsUnassignedToRole(id);
-    return new ResponseEntity<>(permissions, HttpStatus.OK);
-  }
 }
