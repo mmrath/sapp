@@ -4,7 +4,6 @@ import com.mmrath.sapp.domain.security.Permission;
 import com.mmrath.sapp.repository.security.PermissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -19,7 +18,6 @@ public class PermissionService {
     this.permissionRepository  = permissionRepository;
   }
 
-  @Secured("USER_VIEW")
   public List<Permission> findAllPermissions() {
     return permissionRepository.findAll(new Sort(Sort.Direction.ASC, "id"));
   }

@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
-import org.springframework.boot.bind.RelaxedPropertyResolver;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,29 +23,35 @@ import java.util.concurrent.Executor;
 @Profile("!" + Constants.SPRING_PROFILE_FAST)
 public class AsyncConfiguration implements AsyncConfigurer, EnvironmentAware {
 
-    private final Logger log = LoggerFactory.getLogger(AsyncConfiguration.class);
+  private static final String propertyPrefix = "async.";
 
-    private RelaxedPropertyResolver propertyResolver;
+  private final Logger log = LoggerFactory.getLogger(AsyncConfiguration.class);
 
-    @Override
-    public void setEnvironment(Environment environment) {
-        this.propertyResolver = new RelaxedPropertyResolver(environment, "async.");
-    }
+  private Environment environment;
 
-    @Override
-    @Bean
-    public Executor getAsyncExecutor() {
-        log.debug("Creating Async Task Executor");
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(propertyResolver.getProperty("corePoolSize", Integer.class, 2));
-        executor.setMaxPoolSize(propertyResolver.getProperty("maxPoolSize", Integer.class, 50));
-        executor.setQueueCapacity(propertyResolver.getProperty("queueCapacity", Integer.class, 10000));
-        executor.setThreadNamePrefix("sapp-Executor-");
-        return new ExceptionHandlingAsyncTaskExecutor(executor);
-    }
+  @Override
+  public void setEnvironment(Environment environment) {
+    this.environment = environment;
+  }
 
-    @Override
-    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return new SimpleAsyncUncaughtExceptionHandler();
-    }
+  @Override
+  @Bean
+  public Executor getAsyncExecutor() {
+    log.debug("Creating Async Task Executor");
+    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+    executor.setCorePoolSize(getProperty("corePoolSize", Integer.class, 2));
+    executor.setMaxPoolSize(getProperty("maxPoolSize", Integer.class, 50));
+    executor.setQueueCapacity(getProperty("queueCapacity", Integer.class, 10000));
+    executor.setThreadNamePrefix("App-Executor-");
+    return new ExceptionHandlingAsyncTaskExecutor(executor);
+  }
+
+  @Override
+  public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+    return new SimpleAsyncUncaughtExceptionHandler();
+  }
+
+  private <T> T getProperty(String key, Class<T> targetType, T defaultValue) {
+    return environment.getProperty(propertyPrefix + key, targetType, defaultValue);
+  }
 }

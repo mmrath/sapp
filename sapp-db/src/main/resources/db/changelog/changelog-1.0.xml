@@ -285,9 +285,9 @@
             <column name="last_name" type="STRING"/>
             <column name="email" type="STRING"/>
             <column name="enabled" type="NUMERIC"/>
-            <column name="created_date" type="COMPUTED" defaultValueComputed="${now}" />
+            <column name="created_date" type="timestamp"/>
             <column name="created_by" type="STRING" defaultValue="system"/>
-            <column name="last_modified_date" type="COMPUTED" defaultValueComputed="${now}"/>
+            <column name="last_modified_date" type="timestamp"/>
             <column name="last_modified_by" type="STRING" defaultValue="system"/>
             <column name="version" type="NUMERIC" defaultValueNumeric="1"/>
         </loadData>
@@ -317,7 +317,7 @@
     </changeSet>
 
     <changeSet id="1.0.17" author="murali">
-        <createTable tableName="T_AUDIT_EVENT">
+        <createTable tableName="t_audit_event">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -328,7 +328,7 @@
             <column name="event_type" type="varchar(255)"/>
         </createTable>
 
-        <createTable tableName="T_AUDIT_EVENT_DATA">
+        <createTable tableName="t_audit_event_data">
             <column name="event_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
@@ -337,26 +337,46 @@
             </column>
             <column name="value" type="varchar(255)"/>
         </createTable>
-        <addPrimaryKey columnNames="event_id, name" tableName="T_AUDIT_EVENT_DATA"/>
+        <addPrimaryKey columnNames="event_id, name" tableName="t_audit_event_data"/>
 
         <createIndex indexName="idx_audit_event_01"
-                     tableName="T_AUDIT_EVENT"
+                     tableName="t_audit_event"
                      unique="false">
             <column name="principal" type="varchar(255)"/>
             <column name="event_date" type="timestamp"/>
         </createIndex>
 
         <createIndex indexName="idx_audit_event_data_01"
-                     tableName="T_AUDIT_EVENT_DATA"
+                     tableName="t_audit_event_data"
                      unique="false">
             <column name="event_id" type="bigint"/>
         </createIndex>
 
         <addForeignKeyConstraint baseColumnNames="event_id"
-                                 baseTableName="T_AUDIT_EVENT_DATA"
+                                 baseTableName="t_audit_event_data"
                                  constraintName="FK_audit_event_data_01"
                                  referencedColumnNames="id"
-                                 referencedTableName="T_AUDIT_EVENT"/>
+                                 referencedTableName="t_audit_event"/>
+    </changeSet>
+    <changeSet id="1.0.18" author="murali">
+        <createTable tableName="t_token">
+            <column name="series" type="varchar(255)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint"/>
+            <column name="token_value" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="token_date" type="date"/>
+            <column name="ip_address" type="varchar(39)"/>
+            <column name="user_agent" type="varchar(255)"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="t_token"
+                                 constraintName="fk_user_persistent_token"
+                                 referencedColumnNames="id"
+                                 referencedTableName="t_user"/>
+
     </changeSet>
 
 </databaseChangeLog>

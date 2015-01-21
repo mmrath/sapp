@@ -1,4 +1,4 @@
-package com.mmrath.sapp.repository;
+package com.mmrath.sapp.spring.boot.audit;
 
 import com.mmrath.sapp.domain.PersistentAuditEvent;
 import org.springframework.boot.actuate.audit.AuditEvent;

@@ -85,10 +85,17 @@
 				<version>1.0.0.Final</version>
 			</dependency>
 			<dependency>
-				<groupId>org.flywaydb</groupId>
-				<artifactId>flyway-core</artifactId>
-				<version>${flyway.version}</version>
+				<groupId>com.zaxxer</groupId>
+				<artifactId>HikariCP</artifactId>
+				<version>${hikaricp.version}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>tools</artifactId>
+						<groupId>com.sun</groupId>
+					</exclusion>
+				</exclusions>
 			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 </project>

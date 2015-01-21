@@ -1219,4 +1219,18 @@ public abstract class StringUtils {
     return arrayToDelimitedString(arr, ",");
   }
 
+  public static String substringAfter(String str, String separator) {
+    if(isEmpty(str)) {
+      return str;
+    } else if(separator == null) {
+      return "";
+    } else {
+      int pos = str.indexOf(separator);
+      return pos == -1?"":str.substring(pos + separator.length());
+    }
+  }
+
+  public static boolean equals(String str1, String str2) {
+    return str1 == null?str2 == null:str1.equals(str2);
+  }
 }

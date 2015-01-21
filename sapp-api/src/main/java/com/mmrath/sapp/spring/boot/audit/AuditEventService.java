@@ -1,7 +1,6 @@
-package com.mmrath.sapp.service;
+package com.mmrath.sapp.spring.boot.audit;
 
 import com.mmrath.sapp.domain.PersistentAuditEvent;
-import com.mmrath.sapp.repository.AuditEventConverter;
 import com.mmrath.sapp.repository.PersistenceAuditEventRepository;
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
