@@ -11,6 +11,9 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>sapp-api</artifactId>
     <description>This provides custom APIs on top of what is provided by spring data</description>
+    <properties>
+        <start-class>com.mmrath.sapp.ApplicationMain</start-class>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>com.mmrath.sapp</groupId>
