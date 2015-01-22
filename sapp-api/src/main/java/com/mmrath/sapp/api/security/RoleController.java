@@ -1,4 +1,4 @@
-package com.mmrath.sapp.security;
+package com.mmrath.sapp.api.security;
 
 import com.mmrath.sapp.ResourceNotFoundException;
 import com.mmrath.sapp.domain.security.Permission;
@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/roles")
+@RequestMapping("/api/roles")
 public class RoleController {
 
   private final RoleService roleService;

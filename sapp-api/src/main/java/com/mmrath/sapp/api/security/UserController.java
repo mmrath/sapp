@@ -1,4 +1,4 @@
-package com.mmrath.sapp.security;
+package com.mmrath.sapp.api.security;
 
 import com.mmrath.sapp.ResourceNotFoundException;
 import com.mmrath.sapp.domain.security.User;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
   private final Logger logger = LoggerFactory.getLogger(UserController.class);

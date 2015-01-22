@@ -1,4 +1,4 @@
-package com.mmrath.sapp.security;
+package com.mmrath.sapp.api.security;
 
 import com.mmrath.sapp.domain.security.Permission;
 import com.mmrath.sapp.service.security.PermissionService;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/permissions")
+@RequestMapping("/api/permissions")
 public class PermissionController {
 
   private final PermissionService permissionService;
