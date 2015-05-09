@@ -367,7 +367,7 @@
             <column name="token_value" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="token_date" type="date"/>
+            <column name="token_date" type="timestamp"/>
             <column name="ip_address" type="varchar(39)"/>
             <column name="user_agent" type="varchar(255)"/>
         </createTable>

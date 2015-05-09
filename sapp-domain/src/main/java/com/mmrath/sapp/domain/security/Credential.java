@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -25,7 +27,7 @@ public class Credential implements Serializable {
   private String password;
 
   @Column(name = "expiry_date", nullable = false)
-  private Date expiryDate;
+  private Instant expiryDate;
 
   @Column(name = "invalid_attempts", nullable = false)
   private int invalidAttempts;
@@ -49,11 +51,11 @@ public class Credential implements Serializable {
     this.password = password;
   }
 
-  public Date getExpiryDate() {
+  public Instant getExpiryDate() {
     return expiryDate;
   }
 
-  public void setExpiryDate(Date expiryDate) {
+  public void setExpiryDate(Instant expiryDate) {
     this.expiryDate = expiryDate;
   }
 

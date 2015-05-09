@@ -2,12 +2,12 @@ package com.mmrath.sapp.spring.boot.audit;
 
 import com.mmrath.sapp.domain.PersistentAuditEvent;
 import com.mmrath.sapp.repository.PersistenceAuditEventRepository;
-import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 
 
@@ -29,7 +29,7 @@ public class AuditEventService {
     return auditEventConverter.convertToAuditEvent(persistenceAuditEventRepository.findAll());
   }
 
-  public List<AuditEvent> findByDates(LocalDateTime fromDate, LocalDateTime toDate) {
+  public List<AuditEvent> findByDates(Instant fromDate, Instant toDate) {
     List<PersistentAuditEvent> persistentAuditEvents =
         persistenceAuditEventRepository.findAllByAuditEventDateBetween(fromDate, toDate);
 

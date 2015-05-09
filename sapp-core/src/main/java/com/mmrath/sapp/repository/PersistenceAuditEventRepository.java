@@ -1,10 +1,9 @@
 package com.mmrath.sapp.repository;
 
 import com.mmrath.sapp.domain.PersistentAuditEvent;
-import com.mmrath.sapp.domain.security.Permission;
-import org.joda.time.LocalDateTime;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -13,7 +12,7 @@ import java.util.List;
 public interface PersistenceAuditEventRepository extends JpaRepository<PersistentAuditEvent, Long> {
   List<PersistentAuditEvent> findByPrincipal(String principal);
 
-  List<PersistentAuditEvent> findByPrincipalAndAuditEventDateAfter(String principal, LocalDateTime after);
+  List<PersistentAuditEvent> findByPrincipalAndAuditEventDateAfter(String principal, Instant after);
 
-  List<PersistentAuditEvent> findAllByAuditEventDateBetween(LocalDateTime fromDate, LocalDateTime toDate);
+  List<PersistentAuditEvent> findAllByAuditEventDateBetween(Instant fromDate, Instant toDate);
 }

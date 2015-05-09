@@ -1,20 +1,20 @@
 package com.mmrath.sapp.domain;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
-import org.joda.time.DateTime;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
+import java.time.Instant;
+
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 
 @MappedSuperclass
 @Audited
@@ -30,18 +30,16 @@ public abstract class AbstractAuditingEntity<T extends Serializable> implements 
 
   @CreatedDate
   @NotNull
-  @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
   @Column(name = "created_date", nullable = false)
-  private DateTime createdDate = DateTime.now();
+  private Instant createdDate = Instant.now();
 
   @LastModifiedBy
   @Column(name = "last_modified_by", length = 50)
   private String lastModifiedBy;
 
   @LastModifiedDate
-  @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
   @Column(name = "last_modified_date")
-  private DateTime lastModifiedDate = DateTime.now();
+  private Instant lastModifiedDate = Instant.now();
 
   @Version
   private Integer version;
@@ -56,11 +54,11 @@ public abstract class AbstractAuditingEntity<T extends Serializable> implements 
     this.createdBy = createdBy;
   }
 
-  public DateTime getCreatedDate() {
+  public Instant getCreatedDate() {
     return createdDate;
   }
 
-  public void setCreatedDate(DateTime createdDate) {
+  public void setCreatedDate(Instant createdDate) {
     this.createdDate = createdDate;
   }
 
@@ -72,11 +70,11 @@ public abstract class AbstractAuditingEntity<T extends Serializable> implements 
     this.lastModifiedBy = lastModifiedBy;
   }
 
-  public DateTime getLastModifiedDate() {
+  public Instant getLastModifiedDate() {
     return lastModifiedDate;
   }
 
-  public void setLastModifiedDate(DateTime lastModifiedDate) {
+  public void setLastModifiedDate(Instant lastModifiedDate) {
     this.lastModifiedDate = lastModifiedDate;
   }
 

@@ -1,11 +1,14 @@
 package com.mmrath.sapp.config;
 
 import com.mmrath.sapp.domain.AbstractAuditingEntity;
+import com.mmrath.sapp.repository.PersistenceAuditEventRepository;
+import com.mmrath.sapp.repository.security.PersistentTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -14,12 +17,18 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
 @Configuration
-@EnableJpaRepositories("com.mmrath.sapp.repository")
+@EnableJpaRepositories(
+    basePackageClasses = {
+        PersistenceAuditEventRepository.class,
+        PersistentTokenRepository.class
+    }
+)
 @EnableJpaAuditing(auditorAwareRef = "springSecurityAuditorAware")
 @EnableTransactionManagement
 public class JpaConfiguration {
@@ -35,9 +44,9 @@ public class JpaConfiguration {
   public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
     LocalContainerEntityManagerFactoryBean entityManagerFactory =
         new LocalContainerEntityManagerFactoryBean();
-    entityManagerFactory.setPackagesToScan(AbstractAuditingEntity.class.getPackage().getName());
+    entityManagerFactory.setPackagesToScan(AbstractAuditingEntity.class.getPackage().getName(),
+        Jsr310JpaConverters.class.getPackage().getName());
     entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-
     entityManagerFactory.setDataSource(dataSource);
 
     Map<String, String> jpaProperties = new HashMap<>();
@@ -61,12 +70,11 @@ public class JpaConfiguration {
     return transactionManager;
   }
 
-  private String getProperty(String property){
-    return environment.getProperty("hibernate."+property);
-  }
-  private String getProperty(String property, String defaultValue){
-    return environment.getProperty("hibernate."+property, defaultValue);
+  private String getProperty(String property) {
+    return environment.getProperty("hibernate." + property);
   }
 
-
+  private String getProperty(String property, String defaultValue) {
+    return environment.getProperty("hibernate." + property, defaultValue);
+  }
 }

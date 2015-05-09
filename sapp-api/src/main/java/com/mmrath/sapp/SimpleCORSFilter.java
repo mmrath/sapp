@@ -2,9 +2,10 @@ package com.mmrath.sapp;
 
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 
 @Component

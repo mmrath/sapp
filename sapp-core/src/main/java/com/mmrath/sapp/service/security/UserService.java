@@ -112,7 +112,7 @@ public class UserService {
       String encodedPassword = PasswordUtils.encodePassword(password, salt);
       credential.setPassword(encodedPassword);
       Date expiryDate = new Date(System.currentTimeMillis() + 365 * 24 * 60 * 100);
-      credential.setExpiryDate(expiryDate);
+      credential.setExpiryDate(expiryDate.toInstant());
       credential.setInvalidAttempts(3);
       userCredentialRepository.saveAndFlush(user.getCredential());
     }
