@@ -1,6 +1,7 @@
-package com.mmrath.sapp.spring.boot.audit;
+package com.mmrath.sapp.service.security;
 
 import com.mmrath.sapp.domain.PersistentAuditEvent;
+import com.mmrath.sapp.repository.AuditEventConverter;
 import com.mmrath.sapp.repository.PersistenceAuditEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.audit.AuditEvent;

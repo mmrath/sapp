@@ -4,6 +4,7 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlet.InstrumentedFilter;
 import com.codahale.metrics.servlets.MetricsServlet;
 import com.mmrath.sapp.Constants;
+import com.mmrath.sapp.config.CacheConfiguration;
 import com.mmrath.sapp.web.filter.CachingHttpHeadersFilter;
 import com.mmrath.sapp.web.filter.StaticResourcesProductionFilter;
 import com.mmrath.sapp.web.filter.gzip.GZipServletFilter;

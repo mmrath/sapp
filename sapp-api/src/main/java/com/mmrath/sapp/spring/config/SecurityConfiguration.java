@@ -84,6 +84,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .headers()
         .frameOptions()
         .disable()
+    .and()
         .authorizeRequests()
         .antMatchers("/api/register").permitAll()
         .antMatchers("/api/activate").permitAll()
@@ -115,7 +116,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   }
 
   @EnableGlobalMethodSecurity(prePostEnabled = true, jsr250Enabled = true)
-  private static class GlobalSecurityConfiguration extends GlobalMethodSecurityConfiguration {
+  static class GlobalSecurityConfiguration extends GlobalMethodSecurityConfiguration {
 
   }
 }

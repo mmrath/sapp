@@ -1,4 +1,4 @@
-package com.mmrath.sapp.spring.boot.audit;
+package com.mmrath.sapp.repository;
 
 import com.mmrath.sapp.domain.PersistentAuditEvent;
 import org.springframework.boot.actuate.audit.AuditEvent;
@@ -28,9 +28,10 @@ public class AuditEventConverter {
     List<AuditEvent> auditEvents = new ArrayList<>();
 
     for (PersistentAuditEvent persistentAuditEvent : persistentAuditEvents) {
-      AuditEvent auditEvent = new AuditEvent(new Date(persistentAuditEvent.getAuditEventDate().toEpochMilli()),
-          persistentAuditEvent.getPrincipal(), persistentAuditEvent.getAuditEventType(),
-          convertDataToObjects(persistentAuditEvent.getData()));
+      AuditEvent auditEvent =
+          new AuditEvent(new Date(persistentAuditEvent.getAuditEventDate().toEpochMilli()),
+              persistentAuditEvent.getPrincipal(), persistentAuditEvent.getAuditEventType(),
+              convertDataToObjects(persistentAuditEvent.getData()));
       auditEvents.add(auditEvent);
     }
 
