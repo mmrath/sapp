@@ -2,8 +2,8 @@ package com.mmrath.sapp.api.security;
 
 import com.mmrath.sapp.ResourceNotFoundException;
 import com.mmrath.sapp.domain.security.User;
-import com.mmrath.sapp.domain.security.UserSearchFilter;
 import com.mmrath.sapp.service.security.UserService;
+import com.mmrath.sapp.util.rsql.RsqlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
 
   private final Logger logger = LoggerFactory.getLogger(UserController.class);
@@ -39,10 +39,10 @@ public class UserController {
 
   @RequestMapping(method = RequestMethod.GET)
   @ResponseBody
-  public Page<User> getUsers(UserSearchFilter userSearchCriteria, Pageable pageRequest) {
-    logger.debug("Page request:{}", pageRequest);
-    logger.debug("User search criteria:{}", userSearchCriteria);
-    return null;
+  public Page<User> getUsers(String query, Pageable pageRequest) {
+    logger.info("Page request:{}", pageRequest);
+    logger.info("User search criteria:{}", query);
+    return userService.findUsers(RsqlUtils.parse(query),pageRequest);
   }
 
   @RequestMapping(method = RequestMethod.POST)

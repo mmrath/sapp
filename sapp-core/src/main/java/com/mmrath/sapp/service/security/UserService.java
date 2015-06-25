@@ -9,11 +9,18 @@ import com.mmrath.sapp.repository.security.UserRepository;
 import com.mmrath.sapp.util.PasswordUtils;
 import com.mmrath.sapp.utils.PersistentUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -65,6 +72,15 @@ public class UserService {
     User user = userRepository.findOne(userId);
     PersistentUtils.initialize(user);
     return user;
+  }
+
+  @Transactional
+  public Page<User> findUsers(Optional<Specification<User>> spec, Pageable pageable){
+    if(spec.isPresent()){
+      return userRepository.findAll(spec.get(),pageable);
+    }else {
+      return userRepository.findAll(pageable);
+    }
   }
 
   @Transactional(readOnly = true)

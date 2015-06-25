@@ -54,6 +54,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
+    if(env.acceptsProfiles("local")){
+        http.authorizeRequests().anyRequest().anonymous();
+        return;
+    }
     //formatter:off
 
     http
