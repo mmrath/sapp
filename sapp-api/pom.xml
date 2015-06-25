@@ -74,7 +74,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
-          <jvmArguments>-Dspring.profiles.active=local</jvmArguments>
+          <jvmArguments>-Dspring.profiles.active=local,dev</jvmArguments>
         </configuration>
       </plugin>
     </plugins>
