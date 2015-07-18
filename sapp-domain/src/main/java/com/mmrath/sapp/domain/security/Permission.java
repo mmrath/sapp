@@ -8,70 +8,90 @@ import java.io.Serializable;
 @Table(name = "t_permission")
 public class Permission implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  @Id
-  private Long id;
+    @Id
+    private Long id;
 
-  @Column(name = "name", unique = true, nullable = false,
-      updatable = false, insertable = false)
-  private String name;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "resource", nullable = false,
+            updatable = false, insertable = false)
+    private Resource resource;
 
-  @Column(name = "description", nullable = false)
-  private String description;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "access_level", nullable = false,
+            updatable = false, insertable = false)
+    private AccessLevel accessLevel;
 
-  @Override
-  public String toString() {
-    return "Permission{" +
-        "id=" + id +
-        ", name='" + name + '\'' +
-        ", description='" + description + '\'' +
-        '}';
-  }
+    @Column(name = "description", nullable = false)
+    private String description;
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
+    public String getName(){
+        return resource.name()+":"+accessLevel.name();
+    }
+    @Override
+    public String toString() {
+        return "Permission{" +
+                "id=" + id +
+                ", resource=" + resource +
+                ", accessLevel=" + accessLevel +
+                ", description='" + description + '\'' +
+                '}';
+    }
 
-    Permission that = (Permission) o;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
 
-    if (id != null ? !id.equals(that.id) : that.id != null)
-      return false;
+        Permission that = (Permission) o;
 
-    return true;
-  }
+        if (id != null ? !id.equals(that.id) : that.id != null)
+            return false;
 
-  @Override
-  public int hashCode() {
-    return id != null ? id.hashCode() : 0;
-  }
+        return true;
+    }
 
-  public String getDescription() {
-    return description;
-  }
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+    public Long getId() {
+        return id;
+    }
 
-  public Long getId() {
-    return id;
-  }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
 
-  public String getName() {
-    return name;
-  }
+    public Resource getResource() {
+        return resource;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setResource(Resource resource) {
+        this.resource = resource;
+    }
 
+    public AccessLevel getAccessLevel() {
+        return accessLevel;
+    }
 
+    public void setAccessLevel(AccessLevel accessLevel) {
+        this.accessLevel = accessLevel;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

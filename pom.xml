@@ -18,7 +18,7 @@
     <module>sapp-db</module>
     <module>sapp-core</module>
     <module>sapp-domain</module>
-    <module>sapp-api</module>
+    <module>sapp-web</module>
   </modules>
   <properties>
     <java.version>1.8</java.version>

@@ -19,7 +19,10 @@
       <column name="id" type="BIGINT">
         <constraints nullable="false"/>
       </column>
-      <column name="name" type="VARCHAR(100)">
+      <column name="resource" type="VARCHAR(64)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="access_level" type="VARCHAR(64)">
         <constraints nullable="false"/>
       </column>
       <column name="description" type="VARCHAR(256)">
@@ -28,7 +31,7 @@
     </createTable>
     <addPrimaryKey columnNames="id" constraintName="pk_permission"
                    tableName="t_permission"/>
-    <addUniqueConstraint columnNames="name" constraintName="uk_permission"
+    <addUniqueConstraint columnNames="resource,access_level" constraintName="uk_permission"
                          tableName="t_permission"/>
   </changeSet>
 

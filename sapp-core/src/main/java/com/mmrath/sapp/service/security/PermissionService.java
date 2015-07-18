@@ -25,8 +25,4 @@ public class PermissionService {
   public Permission findPermissionById(Long id) {
     return permissionRepository.findOne(id);
   }
-
-  public Permission findPermissionByName(String permissionName) {
-    return permissionRepository.findByName(permissionName);
-  }
 }
