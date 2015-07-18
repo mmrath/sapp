@@ -29,7 +29,7 @@ public class UserController {
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
   @ResponseBody
-  public User getUser(@PathVariable("id") Long id) {
+  public User findUser(@PathVariable("id") Long id) {
     User user = userService.findUser(id);
     if(user==null){
       throw new ResourceNotFoundException("User not found");
@@ -39,7 +39,7 @@ public class UserController {
 
   @RequestMapping(method = RequestMethod.GET)
   @ResponseBody
-  public Page<User> getUsers(String query, Pageable pageRequest) {
+  public Page<User> findUsers(String query, Pageable pageRequest) {
     logger.info("Page request:{}", pageRequest);
     logger.info("User search criteria:{}", query);
     return userService.findUsers(RsqlUtils.parse(query),pageRequest);

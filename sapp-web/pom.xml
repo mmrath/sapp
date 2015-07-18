@@ -7,7 +7,9 @@
     <version>0.0.1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
+
   <artifactId>sapp-api</artifactId>
+  <packaging>war</packaging>
   <description>This provides custom APIs on top of what is provided by spring data</description>
   <properties>
     <start-class>com.mmrath.sapp.ApplicationMain</start-class>

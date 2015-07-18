@@ -3,7 +3,7 @@ package com.mmrath.sapp.domain.security;
 /**
  * Represents action on a resource
  */
-public enum Action {
+public enum AccessLevel {
     READ,
     CREATE,
     UPDATE,
